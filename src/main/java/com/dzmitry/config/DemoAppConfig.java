@@ -41,7 +41,7 @@ public class DemoAppConfig implements WebMvcConfigurer {
 
 		// set the jdbc driver
 		try {
-			myDataSource.setDriverClass("com.mysql.jdbc.Driver");		
+			myDataSource.setDriverClass(env.getProperty("jdbc.driver"));
 		}
 		catch (PropertyVetoException exc) {
 			throw new RuntimeException(exc);
@@ -105,7 +105,6 @@ public class DemoAppConfig implements WebMvcConfigurer {
 	}
 	
 	@Bean
-	@Autowired
 	public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
 		
 		// setup transaction manager based on session factory
