@@ -1,6 +1,7 @@
 package com.dzmitry.rest;
 
 import com.dzmitry.entity.Customer;
+import com.dzmitry.exception_handling.CustomerNotFoundException;
 import com.dzmitry.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,13 @@ public class CustomerRestController {
 
     @GetMapping("/customers/{customerId}")
     public Customer customer(@PathVariable int customerId){
-        return customerService.getCustomer(customerId);
+
+        Customer customer = customerService.getCustomer(customerId);
+
+        if(customer == null){
+            throw new CustomerNotFoundException("Customer id not found " + customerId);
+        }
+
+        return customer;
     }
 }
