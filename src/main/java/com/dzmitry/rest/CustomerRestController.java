@@ -4,10 +4,7 @@ import com.dzmitry.entity.Customer;
 import com.dzmitry.exception_handling.CustomerNotFoundException;
 import com.dzmitry.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +30,30 @@ public class CustomerRestController {
         }
 
         return customer;
+    }
+
+    @PostMapping("/customers")
+    public Customer addCustomer(@RequestBody Customer customer) {
+        customer.setId(0);
+        customerService.saveCustomer(customer);
+        return customer;
+    }
+
+    @PutMapping("/customers")
+    public Customer updateCustomer(@RequestBody Customer customer) {
+        customerService.saveCustomer(customer);
+        return customer;
+    }
+
+    @DeleteMapping("/customers/{customerId}")
+    public String deleteCustomer(@PathVariable int customerId) {
+
+        Customer tmpCustomer = customerService.getCustomer(customerId);
+
+        if(tmpCustomer == null) {
+            throw new CustomerNotFoundException("Customer id not found - " + customerId);
+        }
+        customerService.deleteCustomer(customerId);
+        return "Deleted customer id - " + customerId;
     }
 }
